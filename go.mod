@@ -1,8 +1,9 @@
-module github.com/cogniia/core-api-template
+module github.com/mateushlsilva/core-api-template
 
 go 1.23.0
 
 require (
+	github.com/cogniia/core-api-template v0.0.0-20250310204704-b1d00b6365ab
 	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/gofiber/swagger v1.1.0
 	github.com/golang-jwt/jwt/v4 v4.5.0
@@ -46,7 +47,6 @@ require (
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/mfridman/interpolate v0.0.2 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
-	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/sethvargo/go-retry v0.2.4 // indirect
 	github.com/swaggo/files/v2 v2.0.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect

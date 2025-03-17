@@ -15,6 +15,225 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/product": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Returns a paginated list of products",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get products paginated",
+                "parameters": [
+                    {
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "type": "string",
+                        "default": "desc",
+                        "x-enum-varnames": [
+                            "Asc",
+                            "Desc"
+                        ],
+                        "name": "created_at",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "created_at_geq",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "created_at_leq",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The unique identifier",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "ingredients",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Number of items to return",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "The offset from where to start the items",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "name": "price",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "type": "string",
+                        "default": "desc",
+                        "x-enum-varnames": [
+                            "Asc",
+                            "Desc"
+                        ],
+                        "name": "updated_at",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "updated_at_geq",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "updated_at_leq",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of products",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/product_entity.Product"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Updates a product's details by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Update product by ID",
+                "parameters": [
+                    {
+                        "description": "Product data to update",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/product_model.UpdateWithId"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/product_entity.Product"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a new product item",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Creates a new product",
+                "parameters": [
+                    {
+                        "description": "Product data",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/product_model.Create"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created product",
+                        "schema": {
+                            "$ref": "#/definitions/product_entity.Product"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Deletes a product by its ID (only accessible by admins)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Delete product by ID",
+                "parameters": [
+                    {
+                        "description": "Product ID to delete",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_cogniia_core-api-template_src_common_model.RequiredId"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Product deleted successfully"
+                    }
+                }
+            }
+        },
         "/user": {
             "get": {
                 "security": [
@@ -124,7 +343,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/user_entity.User"
+                                "$ref": "#/definitions/github_com_cogniia_core-api-template_src_user_entity.User"
                             }
                         }
                     }
@@ -154,7 +373,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user_model.UpdateWithId"
+                            "$ref": "#/definitions/github_com_cogniia_core-api-template_src_user_model.UpdateWithId"
                         }
                     }
                 ],
@@ -162,7 +381,7 @@ const docTemplate = `{
                     "200": {
                         "description": "User updated successfully",
                         "schema": {
-                            "$ref": "#/definitions/common_model.ApiError"
+                            "$ref": "#/definitions/github_com_cogniia_core-api-template_src_common_model.ApiError"
                         }
                     }
                 }
@@ -186,7 +405,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user_model.Create"
+                            "$ref": "#/definitions/github_com_cogniia_core-api-template_src_user_model.Create"
                         }
                     }
                 ],
@@ -194,7 +413,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created user",
                         "schema": {
-                            "$ref": "#/definitions/user_entity.User"
+                            "$ref": "#/definitions/github_com_cogniia_core-api-template_src_user_entity.User"
                         }
                     }
                 }
@@ -223,7 +442,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/common_model.RequiredId"
+                            "$ref": "#/definitions/github_com_cogniia_core-api-template_src_common_model.RequiredId"
                         }
                     }
                 ],
@@ -254,7 +473,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/auth_model.RefreshRequest"
+                            "$ref": "#/definitions/github_com_cogniia_core-api-template_src_auth_model.RefreshRequest"
                         }
                     }
                 ],
@@ -262,7 +481,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Refresh successful",
                         "schema": {
-                            "$ref": "#/definitions/auth_model.LoginResponse"
+                            "$ref": "#/definitions/github_com_cogniia_core-api-template_src_auth_model.LoginResponse"
                         }
                     }
                 }
@@ -288,7 +507,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/auth_model.LoginRequest"
+                            "$ref": "#/definitions/github_com_cogniia_core-api-template_src_auth_model.LoginRequest"
                         }
                     }
                 ],
@@ -296,7 +515,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Login successful",
                         "schema": {
-                            "$ref": "#/definitions/auth_model.LoginResponse"
+                            "$ref": "#/definitions/github_com_cogniia_core-api-template_src_auth_model.LoginResponse"
                         }
                     }
                 }
@@ -324,7 +543,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Current user",
                         "schema": {
-                            "$ref": "#/definitions/user_entity.User"
+                            "$ref": "#/definitions/github_com_cogniia_core-api-template_src_user_entity.User"
                         }
                     }
                 }
@@ -353,7 +572,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user_model.UpdateWithPassword"
+                            "$ref": "#/definitions/github_com_cogniia_core-api-template_src_user_model.UpdateWithPassword"
                         }
                     }
                 ],
@@ -386,7 +605,11 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "auth_model.LoginRequest": {
+        "fiber.Map": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "github_com_cogniia_core-api-template_src_auth_model.LoginRequest": {
             "type": "object",
             "properties": {
                 "email": {
@@ -397,7 +620,7 @@ const docTemplate = `{
                 }
             }
         },
-        "auth_model.LoginResponse": {
+        "github_com_cogniia_core-api-template_src_auth_model.LoginResponse": {
             "type": "object",
             "properties": {
                 "refresh_token": {
@@ -408,7 +631,7 @@ const docTemplate = `{
                 }
             }
         },
-        "auth_model.RefreshRequest": {
+        "github_com_cogniia_core-api-template_src_auth_model.RefreshRequest": {
             "type": "object",
             "properties": {
                 "refresh_token": {
@@ -416,7 +639,7 @@ const docTemplate = `{
                 }
             }
         },
-        "common_model.ApiError": {
+        "github_com_cogniia_core-api-template_src_common_model.ApiError": {
             "type": "object",
             "properties": {
                 "content": {
@@ -436,7 +659,7 @@ const docTemplate = `{
                 }
             }
         },
-        "common_model.RequiredId": {
+        "github_com_cogniia_core-api-template_src_common_model.RequiredId": {
             "type": "object",
             "properties": {
                 "id": {
@@ -445,7 +668,7 @@ const docTemplate = `{
                 }
             }
         },
-        "database_model.DateOrderEnum": {
+        "github_com_cogniia_core-api-template_src_database_model.DateOrderEnum": {
             "type": "string",
             "enum": [
                 "asc",
@@ -456,11 +679,7 @@ const docTemplate = `{
                 "Desc"
             ]
         },
-        "fiber.Map": {
-            "type": "object",
-            "additionalProperties": true
-        },
-        "user_entity.User": {
+        "github_com_cogniia_core-api-template_src_user_entity.User": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -486,7 +705,7 @@ const docTemplate = `{
                 }
             }
         },
-        "user_model.Create": {
+        "github_com_cogniia_core-api-template_src_user_model.Create": {
             "type": "object",
             "properties": {
                 "email": {
@@ -503,7 +722,7 @@ const docTemplate = `{
                 }
             }
         },
-        "user_model.UpdateWithId": {
+        "github_com_cogniia_core-api-template_src_user_model.UpdateWithId": {
             "type": "object",
             "properties": {
                 "email": {
@@ -521,7 +740,7 @@ const docTemplate = `{
                 }
             }
         },
-        "user_model.UpdateWithPassword": {
+        "github_com_cogniia_core-api-template_src_user_model.UpdateWithPassword": {
             "type": "object",
             "properties": {
                 "email": {
@@ -532,6 +751,61 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string"
+                }
+            }
+        },
+        "product_entity.Product": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "ingredients": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "product_model.Create": {
+            "type": "object",
+            "properties": {
+                "ingredients": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                }
+            }
+        },
+        "product_model.UpdateWithId": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The unique identifier.",
+                    "type": "string"
+                },
+                "ingredients": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
                 }
             }
         }

@@ -1,24 +1,27 @@
 definitions:
-  auth_model.LoginRequest:
+  fiber.Map:
+    additionalProperties: true
+    type: object
+  github_com_cogniia_core-api-template_src_auth_model.LoginRequest:
     properties:
       email:
         type: string
       password:
         type: string
     type: object
-  auth_model.LoginResponse:
+  github_com_cogniia_core-api-template_src_auth_model.LoginResponse:
     properties:
       refresh_token:
         type: string
       token:
         type: string
     type: object
-  auth_model.RefreshRequest:
+  github_com_cogniia_core-api-template_src_auth_model.RefreshRequest:
     properties:
       refresh_token:
         type: string
     type: object
-  common_model.ApiError:
+  github_com_cogniia_core-api-template_src_common_model.ApiError:
     properties:
       content:
         description: Additional information about the error provided by the service
@@ -35,13 +38,13 @@ definitions:
         description: Short text describing the error as best as we can for humans.
         type: string
     type: object
-  common_model.RequiredId:
+  github_com_cogniia_core-api-template_src_common_model.RequiredId:
     properties:
       id:
         description: The unique identifier.
         type: string
     type: object
-  database_model.DateOrderEnum:
+  github_com_cogniia_core-api-template_src_database_model.DateOrderEnum:
     enum:
     - asc
     - desc
@@ -49,10 +52,7 @@ definitions:
     x-enum-varnames:
     - Asc
     - Desc
-  fiber.Map:
-    additionalProperties: true
-    type: object
-  user_entity.User:
+  github_com_cogniia_core-api-template_src_user_entity.User:
     properties:
       created_at:
         type: string
@@ -69,7 +69,7 @@ definitions:
       updated_at:
         type: string
     type: object
-  user_model.Create:
+  github_com_cogniia_core-api-template_src_user_model.Create:
     properties:
       email:
         type: string
@@ -80,7 +80,7 @@ definitions:
       role:
         type: string
     type: object
-  user_model.UpdateWithId:
+  github_com_cogniia_core-api-template_src_user_model.UpdateWithId:
     properties:
       email:
         type: string
@@ -92,7 +92,7 @@ definitions:
       role:
         type: string
     type: object
-  user_model.UpdateWithPassword:
+  github_com_cogniia_core-api-template_src_user_model.UpdateWithPassword:
     properties:
       email:
         type: string
@@ -101,12 +101,188 @@ definitions:
       password:
         type: string
     type: object
+  product_entity.Product:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      ingredients:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      updated_at:
+        type: string
+    type: object
+  product_model.Create:
+    properties:
+      ingredients:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  product_model.UpdateWithId:
+    properties:
+      id:
+        description: The unique identifier.
+        type: string
+      ingredients:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+    type: object
 info:
   contact: {}
   description: Template to use in your challenge
   title: Core API template
   version: "1.0"
 paths:
+  /product:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a product by its ID (only accessible by admins)
+      parameters:
+      - description: Product ID to delete
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_cogniia_core-api-template_src_common_model.RequiredId'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Product deleted successfully
+      security:
+      - ApiKeyAuth: []
+      summary: Delete product by ID
+      tags:
+      - Product
+    get:
+      consumes:
+      - application/json
+      description: Returns a paginated list of products
+      parameters:
+      - default: desc
+        enum:
+        - asc
+        - desc
+        in: query
+        name: created_at
+        type: string
+        x-enum-varnames:
+        - Asc
+        - Desc
+      - in: query
+        name: created_at_geq
+        type: string
+      - in: query
+        name: created_at_leq
+        type: string
+      - description: The unique identifier
+        in: query
+        name: id
+        type: string
+      - in: query
+        name: ingredients
+        type: string
+      - default: 10
+        description: Number of items to return
+        in: query
+        name: limit
+        type: integer
+      - in: query
+        name: name
+        type: string
+      - default: 0
+        description: The offset from where to start the items
+        in: query
+        name: offset
+        type: integer
+      - in: query
+        name: price
+        type: number
+      - default: desc
+        enum:
+        - asc
+        - desc
+        in: query
+        name: updated_at
+        type: string
+        x-enum-varnames:
+        - Asc
+        - Desc
+      - in: query
+        name: updated_at_geq
+        type: string
+      - in: query
+        name: updated_at_leq
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of products
+          schema:
+            items:
+              $ref: '#/definitions/product_entity.Product'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get products paginated
+      tags:
+      - Product
+    post:
+      consumes:
+      - application/json
+      description: Creates a new product item
+      parameters:
+      - description: Product data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/product_model.Create'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created product
+          schema:
+            $ref: '#/definitions/product_entity.Product'
+      summary: Creates a new product
+      tags:
+      - Product
+    put:
+      consumes:
+      - application/json
+      description: Updates a product's details by its ID
+      parameters:
+      - description: Product data to update
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/product_model.UpdateWithId'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product updated successfully
+          schema:
+            $ref: '#/definitions/product_entity.Product'
+      security:
+      - ApiKeyAuth: []
+      summary: Update product by ID
+      tags:
+      - Product
   /user:
     delete:
       consumes:
@@ -119,7 +295,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/common_model.RequiredId'
+          $ref: '#/definitions/github_com_cogniia_core-api-template_src_common_model.RequiredId'
       produces:
       - application/json
       responses:
@@ -197,7 +373,7 @@ paths:
           description: List of users
           schema:
             items:
-              $ref: '#/definitions/user_entity.User'
+              $ref: '#/definitions/github_com_cogniia_core-api-template_src_user_entity.User'
             type: array
       security:
       - ApiKeyAuth: []
@@ -214,14 +390,14 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/user_model.Create'
+          $ref: '#/definitions/github_com_cogniia_core-api-template_src_user_model.Create'
       produces:
       - application/json
       responses:
         "201":
           description: Created user
           schema:
-            $ref: '#/definitions/user_entity.User'
+            $ref: '#/definitions/github_com_cogniia_core-api-template_src_user_entity.User'
       summary: Creates a new user
       tags:
       - User
@@ -235,14 +411,14 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/user_model.UpdateWithId'
+          $ref: '#/definitions/github_com_cogniia_core-api-template_src_user_model.UpdateWithId'
       produces:
       - application/json
       responses:
         "200":
           description: User updated successfully
           schema:
-            $ref: '#/definitions/common_model.ApiError'
+            $ref: '#/definitions/github_com_cogniia_core-api-template_src_common_model.ApiError'
       security:
       - ApiKeyAuth: []
       summary: Update user by ID
@@ -259,14 +435,14 @@ paths:
         name: refresh
         required: true
         schema:
-          $ref: '#/definitions/auth_model.RefreshRequest'
+          $ref: '#/definitions/github_com_cogniia_core-api-template_src_auth_model.RefreshRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Refresh successful
           schema:
-            $ref: '#/definitions/auth_model.LoginResponse'
+            $ref: '#/definitions/github_com_cogniia_core-api-template_src_auth_model.LoginResponse'
       summary: Refresh Access Token
       tags:
       - Auth
@@ -281,14 +457,14 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/auth_model.LoginRequest'
+          $ref: '#/definitions/github_com_cogniia_core-api-template_src_auth_model.LoginRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Login successful
           schema:
-            $ref: '#/definitions/auth_model.LoginResponse'
+            $ref: '#/definitions/github_com_cogniia_core-api-template_src_auth_model.LoginResponse'
       summary: Login
       tags:
       - Auth
@@ -313,7 +489,7 @@ paths:
         "200":
           description: Current user
           schema:
-            $ref: '#/definitions/user_entity.User'
+            $ref: '#/definitions/github_com_cogniia_core-api-template_src_user_entity.User'
       security:
       - ApiKeyAuth: []
       summary: Gets current user
@@ -329,7 +505,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/user_model.UpdateWithPassword'
+          $ref: '#/definitions/github_com_cogniia_core-api-template_src_user_model.UpdateWithPassword'
       produces:
       - application/json
       responses:

@@ -7,6 +7,7 @@ import (
 	"github.com/cogniia/core-api-template/src/database"
 	_ "github.com/cogniia/core-api-template/src/database/migrations"
 	user_entity "github.com/cogniia/core-api-template/src/user/entity"
+	product_entity "github.com/mateushlsilva/core-api-template/src/product/entity"
 	"github.com/pressly/goose/v3"
 	"github.com/pterm/pterm"
 )
@@ -22,6 +23,7 @@ func automaticMigrations() {
 	pterm.DefaultLogger.Info("Adding automatic migrations")
 	err := database.Connection().AutoMigrate(
 		&user_entity.User{},
+		&product_entity.Product{},
 	)
 	if err != nil {
 		pterm.DefaultLogger.Error(fmt.Sprintf("Unable to add automatic migrations: %s", err))

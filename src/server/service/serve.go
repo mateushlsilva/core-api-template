@@ -16,9 +16,10 @@ func Serve() {
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 	}))
-
+	fmt.Println("Vasco")
 	makeDocs(app)
 	user_router.Route(app)
+	fmt.Println("Registrando rotas do produto...")
 	product_router.Route(app)
 
 	err := app.Listen(fmt.Sprintf(":%s", env.ServerPort))

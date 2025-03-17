@@ -24,7 +24,7 @@ func DeleteProductByID(c *fiber.Ctx) error {
 		)
 	}
 
-	product, err := repository.First(
+	_, err := repository.First(
 		product_entity.Product{
 			Audit: common_model.Audit{
 				Id: reqBody.Id,

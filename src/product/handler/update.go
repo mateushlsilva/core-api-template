@@ -24,7 +24,7 @@ func UpdateProductByID(c *fiber.Ctx) error {
 	}
 
 	// Buscar o produto antes de atualizar
-	product, err := repository.First(
+	_, err := repository.First(
 		product_entity.Product{
 			Audit: common_model.Audit{
 				Id: editProduct.Id,
@@ -40,7 +40,7 @@ func UpdateProductByID(c *fiber.Ctx) error {
 
 	data := product_entity.Product{
 		Name:        editProduct.Name,
-		Description: editProduct.Description,
+		Ingredients: editProduct.Ingredients,
 		Price:       editProduct.Price,
 	}
 

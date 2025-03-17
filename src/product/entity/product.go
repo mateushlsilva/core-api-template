@@ -2,7 +2,6 @@ package product_entity
 
 import (
 	common_model "github.com/cogniia/core-api-template/src/common/model"
-	"gorm.io/gorm"
 )
 
 type Product struct {
