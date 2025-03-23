@@ -5,6 +5,7 @@ import (
 
 	"github.com/cogniia/core-api-template/src/config/env"
 	user_router "github.com/cogniia/core-api-template/src/user/router"
+	pedido_router "github.com/cogniia/core-api-template/src/pedido/router"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/pterm/pterm"
@@ -18,6 +19,7 @@ func Serve() {
 
 	makeDocs(app)
 	user_router.Route(app)
+	pedido_router.Route(app)
 
 	err := app.Listen(fmt.Sprintf(":%s", env.ServerPort))
 	pterm.DefaultLogger.Fatal(

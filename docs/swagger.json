@@ -7,6 +7,177 @@
         "version": "1.0"
     },
     "paths": {
+        "/pedido": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Returns a paginated list of pedidos",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pedido"
+                ],
+                "summary": "Get pedidos paginated",
+                "parameters": [
+                    {
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "type": "string",
+                        "default": "desc",
+                        "x-enum-varnames": [
+                            "Asc",
+                            "Desc"
+                        ],
+                        "name": "created_at",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "created_at_geq",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "created_at_leq",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "The unique identifier",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Number of items to return",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "description": "The offset from where to start the items",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "pedido",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "type": "string",
+                        "default": "desc",
+                        "x-enum-varnames": [
+                            "Asc",
+                            "Desc"
+                        ],
+                        "name": "updated_at",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "updated_at_geq",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "updated_at_leq",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "usuarioId",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of pedidos",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/pedido_entity.Pedido"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a new pedido",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pedido"
+                ],
+                "summary": "Creates a new pedido",
+                "parameters": [
+                    {
+                        "description": "Pedido data",
+                        "name": "pedido",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pedido_model.Create"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created Pedido",
+                        "schema": {
+                            "$ref": "#/definitions/pedido_entity.Pedido"
+                        }
+                    }
+                }
+            }
+        },
+        "/pedido/me": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Returns the currently authenticated pedido",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pedido"
+                ],
+                "summary": "Gets current pedido",
+                "responses": {
+                    "200": {
+                        "description": "Current pedido",
+                        "schema": {
+                            "$ref": "#/definitions/pedido_entity.Pedido"
+                        }
+                    }
+                }
+            }
+        },
         "/user": {
             "get": {
                 "security": [
@@ -451,6 +622,37 @@
         "fiber.Map": {
             "type": "object",
             "additionalProperties": true
+        },
+        "pedido_entity.Pedido": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "pedido": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "usuarioId": {
+                    "type": "string"
+                }
+            }
+        },
+        "pedido_model.Create": {
+            "type": "object",
+            "properties": {
+                "pedido": {
+                    "type": "string"
+                },
+                "usuarioId": {
+                    "type": "string"
+                }
+            }
         },
         "user_entity.User": {
             "type": "object",
