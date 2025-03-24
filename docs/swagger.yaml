@@ -52,6 +52,26 @@ definitions:
   fiber.Map:
     additionalProperties: true
     type: object
+  pedido_entity.Pedido:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      pedido:
+        type: string
+      updated_at:
+        type: string
+      usuarioId:
+        type: string
+    type: object
+  pedido_model.Create:
+    properties:
+      pedido:
+        type: string
+      usuarioId:
+        type: string
+    type: object
   user_entity.User:
     properties:
       created_at:
@@ -107,6 +127,116 @@ info:
   title: Core API template
   version: "1.0"
 paths:
+  /pedido:
+    get:
+      consumes:
+      - application/json
+      description: Returns a paginated list of pedidos
+      parameters:
+      - default: desc
+        enum:
+        - asc
+        - desc
+        in: query
+        name: created_at
+        type: string
+        x-enum-varnames:
+        - Asc
+        - Desc
+      - in: query
+        name: created_at_geq
+        type: string
+      - in: query
+        name: created_at_leq
+        type: string
+      - description: The unique identifier
+        in: query
+        name: id
+        type: string
+      - default: 10
+        description: Number of items to return
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: The offset from where to start the items
+        in: query
+        name: offset
+        type: integer
+      - in: query
+        name: pedido
+        type: string
+      - default: desc
+        enum:
+        - asc
+        - desc
+        in: query
+        name: updated_at
+        type: string
+        x-enum-varnames:
+        - Asc
+        - Desc
+      - in: query
+        name: updated_at_geq
+        type: string
+      - in: query
+        name: updated_at_leq
+        type: string
+      - in: query
+        name: usuarioId
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of pedidos
+          schema:
+            items:
+              $ref: '#/definitions/pedido_entity.Pedido'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get pedidos paginated
+      tags:
+      - Pedido
+    post:
+      consumes:
+      - application/json
+      description: Creates a new pedido
+      parameters:
+      - description: Pedido data
+        in: body
+        name: pedido
+        required: true
+        schema:
+          $ref: '#/definitions/pedido_model.Create'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created Pedido
+          schema:
+            $ref: '#/definitions/pedido_entity.Pedido'
+      summary: Creates a new pedido
+      tags:
+      - Pedido
+  /pedido/me:
+    get:
+      consumes:
+      - application/json
+      description: Returns the currently authenticated pedido
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Current pedido
+          schema:
+            $ref: '#/definitions/pedido_entity.Pedido'
+      security:
+      - ApiKeyAuth: []
+      summary: Gets current pedido
+      tags:
+      - Pedido
   /user:
     delete:
       consumes:
